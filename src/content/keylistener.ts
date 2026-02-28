@@ -20,10 +20,15 @@ function toKeyNotation(e: KeyboardEvent): string {
 	return e.key;
 }
 
+type KeyListenerController = {
+	setEnabled(value: boolean): void;
+};
+
 export function setupKeyListener(
 	keymap: Keymap,
 	registry: ActionRegistry,
-): void {
+): KeyListenerController {
+	let enabled = true;
 	let mode: Mode = "normal";
 	let hintSession: HintSession | null = null;
 	const handler = new KeyHandler(keymap);
@@ -55,6 +60,20 @@ export function setupKeyListener(
 	};
 
 	document.addEventListener("keydown", (e) => {
+		// Shift+Escape toggles enabled state (works even when disabled)
+		if (e.key === "Escape" && e.shiftKey) {
+			e.preventDefault();
+			enabled = !enabled;
+			if (mode === "hint") {
+				endHintSession();
+			}
+			handler.reset();
+			browser.runtime.sendMessage({ type: "toggle-enabled" });
+			return;
+		}
+
+		if (!enabled) return;
+
 		if (isInputElement(e.target)) {
 			mode = nextMode(mode, "focus-input");
 		}
@@ -102,4 +121,10 @@ export function setupKeyListener(
 			handler.reset();
 		}
 	});
+
+	return {
+		setEnabled(value: boolean) {
+			enabled = value;
+		},
+	};
 }

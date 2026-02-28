@@ -22,6 +22,8 @@ export const defaultKeymap: Keymap = {
 		"; y": "hint-copy-url",
 		"; Y": "hint-copy-text",
 		"; m": "hint-copy-markdown",
+		y: "yank-url",
+		Y: "yank-markdown",
 	},
 	insert: {},
 	hint: {},

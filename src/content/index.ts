@@ -1,8 +1,25 @@
 import { ActionRegistry } from "../core/action-registry.js";
 import { defaultKeymap } from "../core/keymap.js";
+import { formatMarkdownLink } from "../core/yank.js";
+import type { BackgroundResponse } from "../shared/messages.js";
 import { registerScrollActions } from "./actions/scroll.js";
 import { setupKeyListener } from "./keylistener.js";
 
 const registry = new ActionRegistry();
 registerScrollActions(registry);
-setupKeyListener(defaultKeymap, registry);
+
+registry.register("yank-url", () => {
+	navigator.clipboard.writeText(window.location.href);
+});
+
+registry.register("yank-markdown", () => {
+	const text = formatMarkdownLink(document.title, window.location.href);
+	navigator.clipboard.writeText(text);
+});
+
+const controller = setupKeyListener(defaultKeymap, registry);
+
+browser.runtime.sendMessage({ type: "get-enabled" }).then((response) => {
+	const { enabled } = response as BackgroundResponse;
+	controller.setEnabled(enabled);
+});
