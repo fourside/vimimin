@@ -45,6 +45,7 @@ const testKeymap: Keymap = {
 		"<C-d>": "scroll-half-page-down",
 	},
 	insert: {},
+	hint: {},
 };
 
 describe("KeyHandler", () => {
@@ -115,6 +116,7 @@ describe("KeyHandler", () => {
 				"g g": "double-g",
 			},
 			insert: {},
+			hint: {},
 		};
 
 		it("waits for possible longer sequence", () => {

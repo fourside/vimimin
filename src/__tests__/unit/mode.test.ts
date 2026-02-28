@@ -14,6 +14,10 @@ describe("nextMode", () => {
 		it("stays normal on escape", () => {
 			expect(nextMode("normal", "escape")).toBe("normal");
 		});
+
+		it("transitions to hint on enter-hint", () => {
+			expect(nextMode("normal", "enter-hint")).toBe("hint");
+		});
 	});
 
 	describe("insert mode", () => {
@@ -27,6 +31,20 @@ describe("nextMode", () => {
 
 		it("transitions to normal on escape", () => {
 			expect(nextMode("insert", "escape")).toBe("normal");
+		});
+	});
+
+	describe("hint mode", () => {
+		it("transitions to normal on escape", () => {
+			expect(nextMode("hint", "escape")).toBe("normal");
+		});
+
+		it("transitions to normal on hint-complete", () => {
+			expect(nextMode("hint", "hint-complete")).toBe("normal");
+		});
+
+		it("stays hint on keypress", () => {
+			expect(nextMode("hint", "keypress")).toBe("hint");
 		});
 	});
 });

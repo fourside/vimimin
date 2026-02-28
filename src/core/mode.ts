@@ -6,6 +6,8 @@ export function nextMode(current: Mode, event: ModeEvent): Mode {
 			switch (event) {
 				case "focus-input":
 					return "insert";
+				case "enter-hint":
+					return "hint";
 				default:
 					return "normal";
 			}
@@ -15,6 +17,14 @@ export function nextMode(current: Mode, event: ModeEvent): Mode {
 					return "normal";
 				default:
 					return "insert";
+			}
+		case "hint":
+			switch (event) {
+				case "escape":
+				case "hint-complete":
+					return "normal";
+				default:
+					return "hint";
 			}
 	}
 }

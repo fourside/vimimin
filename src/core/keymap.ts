@@ -17,6 +17,12 @@ export const defaultKeymap: Keymap = {
 		"<C-u>": "scroll-half-page-up",
 		"<C-f>": "scroll-page-down",
 		"<C-b>": "scroll-page-up",
+		f: "hint-click",
+		F: "hint-new-tab",
+		"; y": "hint-copy-url",
+		"; Y": "hint-copy-text",
+		"; m": "hint-copy-markdown",
 	},
 	insert: {},
+	hint: {},
 };
