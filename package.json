@@ -1,0 +1,25 @@
+{
+	"name": "vimimin",
+	"version": "0.1.0",
+	"private": true,
+	"type": "module",
+	"scripts": {
+		"build": "node build.mjs",
+		"dev": "web-ext run --source-dir dist --firefox-profile dev-profile --keep-profile-changes",
+		"check": "biome check .",
+		"format": "biome check --write .",
+		"lint": "biome lint .",
+		"knip": "knip",
+		"test": "vitest run",
+		"test:watch": "vitest --watch",
+		"typecheck": "tsc"
+	},
+	"devDependencies": {
+		"@biomejs/biome": "^2.4.4",
+		"esbuild": "^0.27.3",
+		"knip": "^5.85.0",
+		"typescript": "^5.9.3",
+		"vitest": "^4.0.18",
+		"web-ext": "^9.3.0"
+	}
+}
