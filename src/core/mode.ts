@@ -8,6 +8,8 @@ export function nextMode(current: Mode, event: ModeEvent): Mode {
 					return "insert";
 				case "enter-hint":
 					return "hint";
+				case "enter-search":
+					return "search";
 				default:
 					return "normal";
 			}
@@ -25,6 +27,14 @@ export function nextMode(current: Mode, event: ModeEvent): Mode {
 					return "normal";
 				default:
 					return "hint";
+			}
+		case "search":
+			switch (event) {
+				case "escape":
+				case "search-complete":
+					return "normal";
+				default:
+					return "search";
 			}
 	}
 }

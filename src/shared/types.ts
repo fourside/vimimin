@@ -1,11 +1,13 @@
-export type Mode = "normal" | "insert" | "hint";
+export type Mode = "normal" | "insert" | "hint" | "search";
 
 export type ModeEvent =
 	| "keypress"
 	| "focus-input"
 	| "escape"
 	| "enter-hint"
-	| "hint-complete";
+	| "hint-complete"
+	| "enter-search"
+	| "search-complete";
 
 export type HintActionType =
 	| "click"

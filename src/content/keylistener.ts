@@ -4,6 +4,8 @@ import type { Keymap } from "../core/keymap.js";
 import { nextMode } from "../core/mode.js";
 import type { Mode } from "../shared/types.js";
 import { HintSession, parseHintActionType } from "./hint-session.js";
+import { SearchSession } from "./search-session.js";
+import { TabFinderSession } from "./tab-finder-session.js";
 
 function isInputElement(el: EventTarget | null): boolean {
 	if (!(el instanceof HTMLElement)) return false;
@@ -20,6 +22,15 @@ function toKeyNotation(e: KeyboardEvent): string {
 	return e.key;
 }
 
+const TAB_ACTIONS = new Set([
+	"tab-next",
+	"tab-prev",
+	"tab-close",
+	"tab-restore",
+	"tab-first",
+	"tab-last",
+]);
+
 type KeyListenerController = {
 	setEnabled(value: boolean): void;
 };
@@ -31,6 +42,8 @@ export function setupKeyListener(
 	let enabled = true;
 	let mode: Mode = "normal";
 	let hintSession: HintSession | null = null;
+	let searchSession: SearchSession | null = null;
+	let tabFinderSession: TabFinderSession | null = null;
 	const handler = new KeyHandler(keymap);
 
 	function startHintSession(actionName: string): void {
@@ -46,9 +59,45 @@ export function setupKeyListener(
 		mode = nextMode(mode, "hint-complete");
 	}
 
+	function startSearchSession(): void {
+		searchSession = new SearchSession();
+		mode = nextMode(mode, "enter-search");
+		searchSession.start(() => {
+			searchSession = null;
+			mode = nextMode(mode, "search-complete");
+		});
+	}
+
+	function endSearchSession(): void {
+		searchSession?.destroy();
+	}
+
+	function startTabFinderSession(): void {
+		tabFinderSession = new TabFinderSession();
+		mode = nextMode(mode, "enter-search");
+		tabFinderSession.start(() => {
+			tabFinderSession = null;
+			mode = nextMode(mode, "search-complete");
+		});
+	}
+
+	function endTabFinderSession(): void {
+		tabFinderSession?.destroy();
+	}
+
 	function handleAction(actionName: string): void {
 		if (parseHintActionType(actionName)) {
 			startHintSession(actionName);
+		} else if (actionName === "search-start") {
+			startSearchSession();
+		} else if (actionName === "search-next") {
+			searchSession?.next();
+		} else if (actionName === "search-prev") {
+			searchSession?.prev();
+		} else if (actionName === "tab-finder") {
+			startTabFinderSession();
+		} else if (TAB_ACTIONS.has(actionName)) {
+			browser.runtime.sendMessage({ type: actionName });
 		} else {
 			const action = registry.get(actionName);
 			action?.();
@@ -60,12 +109,13 @@ export function setupKeyListener(
 	};
 
 	document.addEventListener("keydown", (e) => {
-		// Shift+Escape toggles enabled state (works even when disabled)
 		if (e.key === "Escape" && e.shiftKey) {
 			e.preventDefault();
 			enabled = !enabled;
-			if (mode === "hint") {
-				endHintSession();
+			if (mode === "hint") endHintSession();
+			if (mode === "search") {
+				endSearchSession();
+				endTabFinderSession();
 			}
 			handler.reset();
 			browser.runtime.sendMessage({ type: "toggle-enabled" });
@@ -101,6 +151,10 @@ export function setupKeyListener(
 					mode = nextMode(mode, "hint-complete");
 				}
 			}
+			return;
+		}
+
+		if (mode === "search") {
 			return;
 		}
 

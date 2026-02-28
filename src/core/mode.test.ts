@@ -18,6 +18,10 @@ describe("nextMode", () => {
 		it("transitions to hint on enter-hint", () => {
 			expect(nextMode("normal", "enter-hint")).toBe("hint");
 		});
+
+		it("transitions to search on enter-search", () => {
+			expect(nextMode("normal", "enter-search")).toBe("search");
+		});
 	});
 
 	describe("insert mode", () => {
@@ -45,6 +49,20 @@ describe("nextMode", () => {
 
 		it("stays hint on keypress", () => {
 			expect(nextMode("hint", "keypress")).toBe("hint");
+		});
+	});
+
+	describe("search mode", () => {
+		it("transitions to normal on escape", () => {
+			expect(nextMode("search", "escape")).toBe("normal");
+		});
+
+		it("transitions to normal on search-complete", () => {
+			expect(nextMode("search", "search-complete")).toBe("normal");
+		});
+
+		it("stays search on keypress", () => {
+			expect(nextMode("search", "keypress")).toBe("search");
 		});
 	});
 });

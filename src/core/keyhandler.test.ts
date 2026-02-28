@@ -46,6 +46,7 @@ const testKeymap: Keymap = {
 	},
 	insert: {},
 	hint: {},
+	search: {},
 };
 
 describe("KeyHandler", () => {
@@ -117,6 +118,7 @@ describe("KeyHandler", () => {
 			},
 			insert: {},
 			hint: {},
+			search: {},
 		};
 
 		it("waits for possible longer sequence", () => {
