@@ -20,6 +20,13 @@ declare namespace browser {
 			function get(keys: string | string[]): Promise<Record<string, unknown>>;
 		}
 	}
+	namespace action {
+		function setIcon(details: { path: string; tabId?: number }): Promise<void>;
+		function setTitle(details: {
+			title: string;
+			tabId?: number;
+		}): Promise<void>;
+	}
 	namespace tabs {
 		type Tab = {
 			id?: number;
@@ -32,6 +39,11 @@ declare namespace browser {
 		function remove(tabId: number): Promise<void>;
 		namespace onRemoved {
 			function addListener(callback: (tabId: number) => void): void;
+		}
+		namespace onActivated {
+			function addListener(
+				callback: (activeInfo: { tabId: number }) => void,
+			): void;
 		}
 	}
 	namespace sessions {

@@ -5,6 +5,13 @@ import type {
 	TabListResponse,
 } from "../shared/messages.js";
 
+async function updateIcon(tabId: number, enabled: boolean): Promise<void> {
+	const path = enabled ? "icons/enabled.svg" : "icons/disabled.svg";
+	const title = enabled ? "vimimin (enabled)" : "vimimin (disabled)";
+	await browser.action.setIcon({ path, tabId });
+	await browser.action.setTitle({ title, tabId });
+}
+
 function storageKey(tabId: number): string {
 	return `tab:${tabId}:enabled`;
 }
@@ -101,10 +108,16 @@ browser.runtime.onMessage.addListener((message, sender) => {
 	switch (msg.type) {
 		case "get-enabled":
 			if (tabId === undefined) return;
-			return getEnabled(tabId, url);
+			return getEnabled(tabId, url).then(async (res) => {
+				await updateIcon(tabId, res.enabled);
+				return res;
+			});
 		case "toggle-enabled":
 			if (tabId === undefined) return;
-			return toggleEnabled(tabId, url);
+			return toggleEnabled(tabId, url).then(async (res) => {
+				await updateIcon(tabId, res.enabled);
+				return res;
+			});
 		case "tab-next":
 			return tabNext() as Promise<unknown>;
 		case "tab-prev":
@@ -127,4 +140,11 @@ browser.runtime.onMessage.addListener((message, sender) => {
 
 browser.tabs.onRemoved.addListener((tabId) => {
 	browser.storage.session.remove(storageKey(tabId));
+});
+
+browser.tabs.onActivated.addListener(async ({ tabId }) => {
+	const key = storageKey(tabId);
+	const result = await browser.storage.session.get(key);
+	const enabled = key in result ? (result[key] as boolean) : true;
+	await updateIcon(tabId, enabled);
 });

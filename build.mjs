@@ -22,5 +22,6 @@ await Promise.all([
 ]);
 
 cpSync("src/manifest.json", "dist/manifest.json");
+cpSync("src/icons", "dist/icons", { recursive: true });
 
 console.log("Build complete.");
