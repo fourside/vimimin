@@ -1,5 +1,5 @@
 import { describe, expect, it } from "vitest";
-import { generateLabels } from "../../core/hint-label.js";
+import { generateLabels } from "./hint-label.js";
 
 describe("generateLabels", () => {
 	it("returns empty array for count 0", () => {

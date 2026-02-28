@@ -1,5 +1,5 @@
 import { describe, expect, it } from "vitest";
-import { nextMode } from "../../core/mode.js";
+import { nextMode } from "./mode.js";
 
 describe("nextMode", () => {
 	describe("normal mode", () => {

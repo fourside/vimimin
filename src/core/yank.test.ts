@@ -1,5 +1,5 @@
 import { describe, expect, it } from "vitest";
-import { formatMarkdownLink } from "../../core/yank.js";
+import { formatMarkdownLink } from "./yank.js";
 
 describe("formatMarkdownLink", () => {
 	it("formats a simple link", () => {

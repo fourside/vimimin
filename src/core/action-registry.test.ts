@@ -1,5 +1,5 @@
 import { describe, expect, it, vi } from "vitest";
-import { ActionRegistry } from "../../core/action-registry.js";
+import { ActionRegistry } from "./action-registry.js";
 
 describe("ActionRegistry", () => {
 	it("registers and retrieves an action", () => {

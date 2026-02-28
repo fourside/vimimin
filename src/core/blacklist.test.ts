@@ -1,5 +1,5 @@
 import { describe, expect, it } from "vitest";
-import { isBlacklisted } from "../../core/blacklist.js";
+import { isBlacklisted } from "./blacklist.js";
 
 describe("isBlacklisted", () => {
 	it("returns false for empty patterns", () => {

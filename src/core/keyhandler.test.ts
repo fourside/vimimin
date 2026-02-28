@@ -1,6 +1,6 @@
 import { beforeEach, describe, expect, it, vi } from "vitest";
-import { KeyHandler, type Timer } from "../../core/keyhandler.js";
-import type { Keymap } from "../../core/keymap.js";
+import { KeyHandler, type Timer } from "./keyhandler.js";
+import type { Keymap } from "./keymap.js";
 
 function createFakeTimer() {
 	const timers = new Map<number, { fn: () => void; ms: number }>();

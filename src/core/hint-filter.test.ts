@@ -1,5 +1,5 @@
 import { describe, expect, it } from "vitest";
-import { filterLabels } from "../../core/hint-filter.js";
+import { filterLabels } from "./hint-filter.js";
 
 describe("filterLabels", () => {
 	const labels = ["aa", "as", "ad", "sa", "ss", "sd"];
