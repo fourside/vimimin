@@ -1,5 +1,9 @@
 import { isBlacklisted } from "../core/blacklist.js";
-import type { BackgroundResponse, ContentMessage } from "../shared/messages.js";
+import type {
+	BackgroundResponse,
+	ContentMessage,
+	TabListResponse,
+} from "../shared/messages.js";
 
 function storageKey(tabId: number): string {
 	return `tab:${tabId}:enabled`;
@@ -29,17 +33,95 @@ async function toggleEnabled(
 	return { enabled: next };
 }
 
+async function tabNext(): Promise<void> {
+	const tabs = await browser.tabs.query({ currentWindow: true });
+	const current = tabs.findIndex((t) => t.active);
+	const next = tabs[(current + 1) % tabs.length];
+	if (next?.id !== undefined) {
+		await browser.tabs.update(next.id, { active: true });
+	}
+}
+
+async function tabPrev(): Promise<void> {
+	const tabs = await browser.tabs.query({ currentWindow: true });
+	const current = tabs.findIndex((t) => t.active);
+	const prev = tabs[(current - 1 + tabs.length) % tabs.length];
+	if (prev?.id !== undefined) {
+		await browser.tabs.update(prev.id, { active: true });
+	}
+}
+
+async function tabClose(tabId: number): Promise<void> {
+	await browser.tabs.remove(tabId);
+}
+
+async function tabRestore(): Promise<void> {
+	await browser.sessions.restore();
+}
+
+async function tabFirst(): Promise<void> {
+	const tabs = await browser.tabs.query({ currentWindow: true });
+	const first = tabs[0];
+	if (first?.id !== undefined) {
+		await browser.tabs.update(first.id, { active: true });
+	}
+}
+
+async function tabLast(): Promise<void> {
+	const tabs = await browser.tabs.query({ currentWindow: true });
+	const last = tabs[tabs.length - 1];
+	if (last?.id !== undefined) {
+		await browser.tabs.update(last.id, { active: true });
+	}
+}
+
+async function tabList(): Promise<TabListResponse> {
+	const tabs = await browser.tabs.query({ currentWindow: true });
+	return {
+		tabs: tabs
+			.filter((t) => t.id !== undefined)
+			.map((t) => ({
+				id: t.id as number,
+				title: t.title ?? "",
+				url: t.url ?? "",
+				active: t.active ?? false,
+			})),
+	};
+}
+
+async function tabSwitch(tabId: number): Promise<void> {
+	await browser.tabs.update(tabId, { active: true });
+}
+
 browser.runtime.onMessage.addListener((message, sender) => {
 	const msg = message as ContentMessage;
 	const tabId = sender.tab?.id;
 	const url = sender.tab?.url ?? "";
-	if (tabId === undefined) return;
 
 	switch (msg.type) {
 		case "get-enabled":
+			if (tabId === undefined) return;
 			return getEnabled(tabId, url);
 		case "toggle-enabled":
+			if (tabId === undefined) return;
 			return toggleEnabled(tabId, url);
+		case "tab-next":
+			return tabNext() as Promise<unknown>;
+		case "tab-prev":
+			return tabPrev() as Promise<unknown>;
+		case "tab-close":
+			if (tabId === undefined) return;
+			return tabClose(tabId) as Promise<unknown>;
+		case "tab-restore":
+			return tabRestore() as Promise<unknown>;
+		case "tab-first":
+			return tabFirst() as Promise<unknown>;
+		case "tab-last":
+			return tabLast() as Promise<unknown>;
+		case "tab-list":
+			return tabList();
+		case "tab-switch":
+			return tabSwitch(msg.tabId) as Promise<unknown>;
 	}
 });
 

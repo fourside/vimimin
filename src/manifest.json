@@ -3,7 +3,7 @@
 	"name": "vimimin",
 	"version": "0.1.0",
 	"description": "Vimperator-like keyboard navigation for Firefox",
-	"permissions": ["tabs", "storage"],
+	"permissions": ["tabs", "storage", "sessions"],
 	"background": {
 		"scripts": ["background.js"],
 		"type": "module"

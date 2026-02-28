@@ -21,8 +21,20 @@ declare namespace browser {
 		}
 	}
 	namespace tabs {
+		type Tab = {
+			id?: number;
+			title?: string;
+			url?: string;
+			active?: boolean;
+		};
+		function query(queryInfo: Record<string, unknown>): Promise<Tab[]>;
+		function update(tabId: number, props: { active: boolean }): Promise<Tab>;
+		function remove(tabId: number): Promise<void>;
 		namespace onRemoved {
 			function addListener(callback: (tabId: number) => void): void;
 		}
+	}
+	namespace sessions {
+		function restore(sessionId?: string): Promise<unknown>;
 	}
 }
