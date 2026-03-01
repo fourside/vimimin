@@ -76,6 +76,35 @@ test.describe("tab-finder tests", () => {
     await page2.close();
   });
 
+  test("Ctrl+D closes selected tab and removes it from list", async ({
+    page,
+    extensionContext,
+  }) => {
+    await openFixture(page, "scroll-test.html");
+
+    const [page2] = await Promise.all([
+      extensionContext.waitForEvent("page"),
+      page.evaluate(() =>
+        window.open("http://localhost:8932/search-test.html", "_blank"),
+      ),
+    ]);
+    await page2.waitForSelector("html[data-vimimin-loaded]", {
+      timeout: 5000,
+    });
+
+    await page2.keyboard.press("t");
+    const items = page2.locator("#vimimin-tab-finder ul li");
+    await expect(items.nth(1)).toBeVisible();
+    const countBefore = await items.count();
+
+    // Close the first (selected) tab in the list
+    await page2.keyboard.press("Control+d");
+    await expect(items).toHaveCount(countBefore - 1);
+
+    await page2.keyboard.press("Escape");
+    await page2.close();
+  });
+
   test("ArrowDown moves selection", async ({ page, extensionContext }) => {
     await openFixture(page, "scroll-test.html");
 

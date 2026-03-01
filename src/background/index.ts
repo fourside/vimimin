@@ -150,9 +150,11 @@ browser.runtime.onMessage.addListener((message, sender) => {
       return tabNext() as Promise<unknown>;
     case "tab-prev":
       return tabPrev() as Promise<unknown>;
-    case "tab-close":
-      if (tabId === undefined) return;
-      return tabClose(tabId) as Promise<unknown>;
+    case "tab-close": {
+      const closeId = message.tabId ?? tabId;
+      if (closeId === undefined) return;
+      return tabClose(closeId) as Promise<unknown>;
+    }
     case "tab-restore":
       return tabRestore() as Promise<unknown>;
     case "tab-first":

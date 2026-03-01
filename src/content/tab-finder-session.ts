@@ -32,6 +32,7 @@ export class TabFinderSession {
       onSelect: () => this.select(),
       onMoveUp: () => this.moveUp(),
       onMoveDown: () => this.moveDown(),
+      onDelete: () => this.deleteTab(),
       onClose: () => this.destroy(),
     });
 
@@ -77,6 +78,21 @@ export class TabFinderSession {
       browser.runtime.sendMessage({ type: "tab-switch", tabId: tab.id });
     }
     this.destroy();
+  }
+
+  private deleteTab(): void {
+    const tab = this.filtered[this.selectedIndex];
+    if (!tab) return;
+
+    browser.runtime.sendMessage({ type: "tab-close", tabId: tab.id });
+
+    this.allTabs = this.allTabs.filter((t) => t.id !== tab.id);
+    this.filtered = this.filtered.filter((t) => t.id !== tab.id);
+
+    if (this.selectedIndex >= this.filtered.length) {
+      this.selectedIndex = Math.max(0, this.filtered.length - 1);
+    }
+    this.updateList();
   }
 
   private updateList(): void {

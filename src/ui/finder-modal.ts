@@ -42,6 +42,7 @@ type FinderCallbacks = {
   onSelect(): void;
   onMoveUp(): void;
   onMoveDown(): void;
+  onDelete?(): void;
   onClose(): void;
 };
 
@@ -100,6 +101,9 @@ export function showFinder(
         } else if (e.ctrlKey && e.key === "j") {
           e.preventDefault();
           callbacks.onMoveDown();
+        } else if (e.ctrlKey && e.key === "d") {
+          e.preventDefault();
+          callbacks.onDelete?.();
         }
     }
   });

@@ -3,7 +3,7 @@ type ContentMessage =
   | { type: "toggle-enabled" }
   | { type: "tab-next" }
   | { type: "tab-prev" }
-  | { type: "tab-close" }
+  | { type: "tab-close"; tabId?: number }
   | { type: "tab-restore" }
   | { type: "tab-first" }
   | { type: "tab-last" }
@@ -35,6 +35,12 @@ export function isContentMessage(value: unknown): value is ContentMessage {
   if (typeof obj.type !== "string") return false;
   if (!(validTypes as ReadonlySet<string>).has(obj.type)) return false;
   if (obj.type === "tab-switch" && typeof obj.tabId !== "number") return false;
+  if (
+    obj.type === "tab-close" &&
+    obj.tabId !== undefined &&
+    typeof obj.tabId !== "number"
+  )
+    return false;
   if (obj.type === "tab-open" && typeof obj.url !== "string") return false;
   return true;
 }

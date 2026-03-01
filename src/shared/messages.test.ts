@@ -52,6 +52,18 @@ describe("isContentMessage", () => {
     expect(isContentMessage({ type: "tab-open", url: 123 })).toBe(false);
   });
 
+  it("accepts tab-close without tabId", () => {
+    expect(isContentMessage({ type: "tab-close" })).toBe(true);
+  });
+
+  it("accepts tab-close with numeric tabId", () => {
+    expect(isContentMessage({ type: "tab-close", tabId: 7 })).toBe(true);
+  });
+
+  it("rejects tab-close with non-number tabId", () => {
+    expect(isContentMessage({ type: "tab-close", tabId: "7" })).toBe(false);
+  });
+
   it("accepts all valid message types", () => {
     const types = [
       "get-enabled",
