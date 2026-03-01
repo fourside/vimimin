@@ -9,11 +9,14 @@
 		"ignoreUnknown": false,
 		"includes": [
 			"src/**",
+			"e2e/**",
 			"build.mjs",
 			"biome.json",
 			"tsconfig.json",
 			"knip.json",
-			"package.json"
+			"package.json",
+			"playwright.config.ts",
+			"vitest.config.ts"
 		]
 	},
 	"formatter": {

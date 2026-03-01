@@ -11,13 +11,18 @@
 		"lint": "biome lint .",
 		"knip": "knip",
 		"test": "vitest run",
+		"test:e2e": "npx playwright test",
 		"test:watch": "vitest --watch",
-		"typecheck": "tsc"
+		"typecheck": "tsc && tsc -p e2e"
 	},
 	"devDependencies": {
 		"@biomejs/biome": "^2.4.4",
+		"@playwright/test": "^1.58.2",
+		"@types/node": "^25.3.2",
 		"esbuild": "^0.27.3",
 		"knip": "^5.85.0",
+		"playwright-webextext": "^0.0.4",
+		"tslib": "^2.8.1",
 		"typescript": "^5.9.3",
 		"vitest": "^4.0.18",
 		"web-ext": "^9.3.0"

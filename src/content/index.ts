@@ -23,3 +23,5 @@ browser.runtime.sendMessage({ type: "get-enabled" }).then((response) => {
 	const { enabled } = response as BackgroundResponse;
 	controller.setEnabled(enabled);
 });
+
+document.documentElement.dataset.vimiminLoaded = "true";

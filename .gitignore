@@ -5,3 +5,5 @@ web-ext-artifacts/
 *.xpi
 .test-profile/
 dev-profile/
+test-results/
+playwright-report/
