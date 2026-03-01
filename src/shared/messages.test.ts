@@ -75,7 +75,9 @@ describe("isContentMessage", () => {
       "tab-first",
       "tab-last",
       "tab-list",
+      "bookmark-list",
       "bookmark-toggle",
+      "history-list",
     ];
     for (const type of types) {
       expect(isContentMessage({ type })).toBe(true);
