@@ -2,12 +2,14 @@ import { ActionRegistry } from "../core/action-registry.js";
 import { defaultKeymap } from "../core/keymap.js";
 import { formatMarkdownLink } from "../core/yank.js";
 import type { BackgroundResponse } from "../shared/messages.js";
+import { applyLdrize } from "./actions/ldrize.js";
 import { registerPageNavActions } from "./actions/page-nav.js";
 import { registerScrollActions } from "./actions/scroll.js";
 import { setupController } from "./controller.js";
 
 const registry = new ActionRegistry();
 registerScrollActions(registry);
+applyLdrize(registry);
 registerPageNavActions(registry);
 
 registry.register("yank-url", () => {
