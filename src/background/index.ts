@@ -1,9 +1,9 @@
 import { isBlacklisted } from "../core/blacklist.js";
 import type {
   BackgroundResponse,
-  ContentMessage,
   TabListResponse,
 } from "../shared/messages.js";
+import { isContentMessage } from "../shared/messages.js";
 
 async function updateIcon(tabId: number, enabled: boolean): Promise<void> {
   const path = enabled ? "icons/enabled.svg" : "icons/disabled.svg";
@@ -101,11 +101,11 @@ async function tabSwitch(tabId: number): Promise<void> {
 }
 
 browser.runtime.onMessage.addListener((message, sender) => {
-  const msg = message as ContentMessage;
+  if (!isContentMessage(message)) return;
   const tabId = sender.tab?.id;
   const url = sender.tab?.url ?? "";
 
-  switch (msg.type) {
+  switch (message.type) {
     case "get-enabled":
       if (tabId === undefined) return;
       return getEnabled(tabId, url).then(async (res) => {
@@ -134,7 +134,7 @@ browser.runtime.onMessage.addListener((message, sender) => {
     case "tab-list":
       return tabList();
     case "tab-switch":
-      return tabSwitch(msg.tabId) as Promise<unknown>;
+      return tabSwitch(message.tabId) as Promise<unknown>;
   }
 });
 

@@ -11,7 +11,7 @@
     "lint": "biome lint .",
     "knip": "knip",
     "test": "vitest run",
-    "test:e2e": "npx playwright test",
+    "test:e2e": "VIMIMIN_E2E=1 node build.mjs && npx playwright test",
     "test:watch": "vitest --watch",
     "typecheck": "tsc && tsc -p e2e"
   },

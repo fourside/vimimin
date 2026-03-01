@@ -1,11 +1,16 @@
 import { cpSync } from "node:fs";
 import * as esbuild from "esbuild";
 
+const isE2E = process.env.VIMIMIN_E2E === "1";
+
 const common = {
   bundle: true,
   sourcemap: true,
   target: "firefox115",
   format: "iife",
+  define: {
+    __E2E__: String(isE2E),
+  },
 };
 
 await Promise.all([

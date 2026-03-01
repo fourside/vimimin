@@ -1,5 +1,6 @@
 function globToRegex(pattern: string): RegExp {
-  const escaped = pattern
+  const collapsed = pattern.replace(/\*{2,}/g, "*");
+  const escaped = collapsed
     .replace(/[.+?^${}()|[\]\\]/g, "\\$&")
     .replace(/\*/g, ".*");
   return new RegExp(`^${escaped}$`);

@@ -17,6 +17,8 @@ registry.register("yank-markdown", () => {
   navigator.clipboard.writeText(text);
 });
 
+declare const __E2E__: boolean;
+
 const controller = setupController(defaultKeymap, registry);
 
 browser.runtime.sendMessage({ type: "get-enabled" }).then((response) => {
@@ -24,4 +26,6 @@ browser.runtime.sendMessage({ type: "get-enabled" }).then((response) => {
   controller.setEnabled(enabled);
 });
 
-document.documentElement.dataset.vimiminLoaded = "true";
+if (__E2E__) {
+  document.documentElement.dataset.vimiminLoaded = "true";
+}
