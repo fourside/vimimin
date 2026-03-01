@@ -58,6 +58,7 @@ Vimperator-like keyboard navigation for Firefox. Manifest V3 WebExtension.
 | `t` | Fuzzy tab finder |
 | `b` | Fuzzy bookmark finder |
 | `o` | Fuzzy history finder |
+| `p` | Open clipboard URL in background tab |
 
 ### Navigation
 
@@ -65,6 +66,8 @@ Vimperator-like keyboard navigation for Firefox. Manifest V3 WebExtension.
 |-----|--------|
 | `H` | Go back |
 | `L` | Go forward |
+| `[[` | Previous page (pagination) |
+| `]]` | Next page (pagination) |
 
 ### Other
 

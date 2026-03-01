@@ -102,6 +102,10 @@ async function tabSwitch(tabId: number): Promise<void> {
   await browser.tabs.update(tabId, { active: true });
 }
 
+async function tabOpen(url: string): Promise<void> {
+  await browser.tabs.create({ url, active: false });
+}
+
 async function bookmarkList(): Promise<BookmarkListResponse> {
   const nodes = await browser.bookmarks.search({});
   return {
@@ -159,6 +163,8 @@ browser.runtime.onMessage.addListener((message, sender) => {
       return tabList();
     case "tab-switch":
       return tabSwitch(message.tabId) as Promise<unknown>;
+    case "tab-open":
+      return tabOpen(message.url) as Promise<unknown>;
     case "bookmark-list":
       return bookmarkList();
     case "history-list":

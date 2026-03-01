@@ -38,6 +38,20 @@ describe("isContentMessage", () => {
     expect(isContentMessage({ type: "tab-switch", tabId: "42" })).toBe(false);
   });
 
+  it("accepts valid tab-open message with url", () => {
+    expect(
+      isContentMessage({ type: "tab-open", url: "https://example.com" }),
+    ).toBe(true);
+  });
+
+  it("rejects tab-open without url", () => {
+    expect(isContentMessage({ type: "tab-open" })).toBe(false);
+  });
+
+  it("rejects tab-open with non-string url", () => {
+    expect(isContentMessage({ type: "tab-open", url: 123 })).toBe(false);
+  });
+
   it("accepts all valid message types", () => {
     const types = [
       "get-enabled",

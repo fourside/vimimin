@@ -36,6 +36,7 @@ declare namespace browser {
     };
     function query(queryInfo: Record<string, unknown>): Promise<Tab[]>;
     function update(tabId: number, props: { active: boolean }): Promise<Tab>;
+    function create(props: { url: string; active?: boolean }): Promise<Tab>;
     function remove(tabId: number): Promise<void>;
     namespace onRemoved {
       function addListener(callback: (tabId: number) => void): void;

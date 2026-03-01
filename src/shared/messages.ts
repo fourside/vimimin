@@ -9,6 +9,7 @@ type ContentMessage =
   | { type: "tab-last" }
   | { type: "tab-list" }
   | { type: "tab-switch"; tabId: number }
+  | { type: "tab-open"; url: string }
   | { type: "bookmark-list" }
   | { type: "history-list" };
 
@@ -23,6 +24,7 @@ const validTypes: ReadonlySet<ContentMessage["type"]> = new Set([
   "tab-last",
   "tab-list",
   "tab-switch",
+  "tab-open",
   "bookmark-list",
   "history-list",
 ] as const);
@@ -33,6 +35,7 @@ export function isContentMessage(value: unknown): value is ContentMessage {
   if (typeof obj.type !== "string") return false;
   if (!(validTypes as ReadonlySet<string>).has(obj.type)) return false;
   if (obj.type === "tab-switch" && typeof obj.tabId !== "number") return false;
+  if (obj.type === "tab-open" && typeof obj.url !== "string") return false;
   return true;
 }
 
