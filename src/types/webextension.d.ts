@@ -60,6 +60,11 @@ declare namespace browser {
     function search(
       query: string | Record<string, unknown>,
     ): Promise<BookmarkTreeNode[]>;
+    function create(bookmark: {
+      title: string;
+      url: string;
+    }): Promise<BookmarkTreeNode>;
+    function remove(id: string): Promise<void>;
   }
   namespace history {
     type HistoryItem = {

@@ -121,6 +121,12 @@ export function setupController(
       startBookmarkFinderSession();
     } else if (actionName === "history-finder") {
       startHistoryFinderSession();
+    } else if (actionName === "bookmark-toggle") {
+      browser.runtime.sendMessage({
+        type: "bookmark-toggle",
+        url: window.location.href,
+        title: document.title,
+      });
     } else if (actionName.startsWith("tab-")) {
       browser.runtime.sendMessage({ type: actionName });
     } else {

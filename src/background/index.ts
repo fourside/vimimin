@@ -106,6 +106,16 @@ async function tabOpen(url: string): Promise<void> {
   await browser.tabs.create({ url, active: false });
 }
 
+async function bookmarkToggle(url: string, title: string): Promise<void> {
+  const nodes = await browser.bookmarks.search({ url });
+  const existing = nodes.find((n) => n.url === url);
+  if (existing) {
+    await browser.bookmarks.remove(existing.id);
+  } else {
+    await browser.bookmarks.create({ title, url });
+  }
+}
+
 async function bookmarkList(): Promise<BookmarkListResponse> {
   const nodes = await browser.bookmarks.search({});
   return {
@@ -169,6 +179,8 @@ browser.runtime.onMessage.addListener((message, sender) => {
       return tabOpen(message.url) as Promise<unknown>;
     case "bookmark-list":
       return bookmarkList();
+    case "bookmark-toggle":
+      return bookmarkToggle(message.url, message.title) as Promise<unknown>;
     case "history-list":
       return historyList();
   }

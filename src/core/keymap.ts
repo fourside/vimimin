@@ -39,6 +39,7 @@ export const defaultKeymap: Keymap = {
     t: "tab-finder",
     b: "bookmark-finder",
     o: "history-finder",
+    a: "bookmark-toggle",
     p: "open-clipboard-url",
     "[ [": "prev-page",
     "] ]": "next-page",
