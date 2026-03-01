@@ -5,7 +5,7 @@ declare namespace browser {
       function addListener(
         callback: (
           message: unknown,
-          sender: { tab?: { id?: number; url?: string } },
+          sender: { tab?: { id?: number; url?: string; title?: string } },
         ) => Promise<unknown> | undefined,
       ): void;
     }

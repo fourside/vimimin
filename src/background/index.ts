@@ -179,8 +179,12 @@ browser.runtime.onMessage.addListener((message, sender) => {
       return tabOpen(message.url) as Promise<unknown>;
     case "bookmark-list":
       return bookmarkList();
-    case "bookmark-toggle":
-      return bookmarkToggle(message.url, message.title) as Promise<unknown>;
+    case "bookmark-toggle": {
+      const toggleUrl = sender.tab?.url;
+      const toggleTitle = sender.tab?.title ?? "";
+      if (!toggleUrl) return;
+      return bookmarkToggle(toggleUrl, toggleTitle) as Promise<unknown>;
+    }
     case "history-list":
       return historyList();
   }

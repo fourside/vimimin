@@ -15,8 +15,8 @@ npm run check        # biome check (format + lint)
 npm run format       # biome format --write
 npm run typecheck    # tsc (src + e2e)
 npm run knip         # detect unused exports/imports
-npm test             # vitest run (97 unit tests)
-npm run test:e2e     # playwright test (45 E2E tests, builds with E2E flag automatically)
+npm test             # vitest run
+npm run test:e2e     # playwright test (builds with E2E flag automatically)
 npm run test:watch   # vitest watch mode
 ```
 

@@ -64,31 +64,6 @@ describe("isContentMessage", () => {
     expect(isContentMessage({ type: "tab-close", tabId: "7" })).toBe(false);
   });
 
-  it("accepts bookmark-toggle with url and title", () => {
-    expect(
-      isContentMessage({
-        type: "bookmark-toggle",
-        url: "https://example.com",
-        title: "Example",
-      }),
-    ).toBe(true);
-  });
-
-  it("rejects bookmark-toggle without url", () => {
-    expect(
-      isContentMessage({ type: "bookmark-toggle", title: "Example" }),
-    ).toBe(false);
-  });
-
-  it("rejects bookmark-toggle without title", () => {
-    expect(
-      isContentMessage({
-        type: "bookmark-toggle",
-        url: "https://example.com",
-      }),
-    ).toBe(false);
-  });
-
   it("accepts all valid message types", () => {
     const types = [
       "get-enabled",
@@ -100,6 +75,7 @@ describe("isContentMessage", () => {
       "tab-first",
       "tab-last",
       "tab-list",
+      "bookmark-toggle",
     ];
     for (const type of types) {
       expect(isContentMessage({ type })).toBe(true);

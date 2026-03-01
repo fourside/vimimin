@@ -122,11 +122,7 @@ export function setupController(
     } else if (actionName === "history-finder") {
       startHistoryFinderSession();
     } else if (actionName === "bookmark-toggle") {
-      browser.runtime.sendMessage({
-        type: "bookmark-toggle",
-        url: window.location.href,
-        title: document.title,
-      });
+      browser.runtime.sendMessage({ type: "bookmark-toggle" });
     } else if (actionName.startsWith("tab-")) {
       browser.runtime.sendMessage({ type: actionName });
     } else {
