@@ -17,6 +17,10 @@ registry.register("yank-markdown", () => {
   navigator.clipboard.writeText(text).catch(() => {});
 });
 
+registry.register("reload", () => {
+  location.reload();
+});
+
 declare const __E2E__: boolean;
 
 const controller = setupController(defaultKeymap, registry);

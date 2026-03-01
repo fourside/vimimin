@@ -79,6 +79,19 @@ test.describe("scroll and mode tests", () => {
     expect(scrollY).toBeGreaterThan(0);
   });
 
+  test("r reloads the page", async ({ page }) => {
+    await page.evaluate(() => {
+      Object.defineProperty(window, "__reloadMarker", { value: true });
+    });
+
+    await Promise.all([page.waitForEvent("load"), page.keyboard.press("r")]);
+
+    const marker = await page.evaluate(
+      () => (window as unknown as { __reloadMarker?: boolean }).__reloadMarker,
+    );
+    expect(marker).toBeUndefined();
+  });
+
   test("consumed keys do not reach page listeners", async ({ page }) => {
     await page.evaluate(() => {
       const keys: string[] = [];

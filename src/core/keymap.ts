@@ -33,6 +33,7 @@ export const defaultKeymap: Keymap = {
     u: "tab-restore",
     "g 0": "tab-first",
     "g $": "tab-last",
+    r: "reload",
     b: "tab-finder",
   },
   insert: {},

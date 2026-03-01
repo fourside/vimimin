@@ -61,6 +61,7 @@ Vimperator-like keyboard navigation for Firefox. Manifest V3 WebExtension.
 
 | Key | Action |
 |-----|--------|
+| `r` | Reload page |
 | `Shift+Escape` | Toggle extension on/off |
 | `Escape` | Return to normal mode |
 
