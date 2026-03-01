@@ -99,63 +99,86 @@ export function setupController(
     handleAction(actionName);
   };
 
-  document.addEventListener("keydown", (e) => {
-    if (e.key === "Escape" && e.shiftKey) {
-      e.preventDefault();
-      enabled = !enabled;
-      if (mode === "hint") endHintSession();
-      if (mode === "search") {
-        endSearchSession();
-        endTabFinderSession();
+  const consumedKeys = new Set<string>();
+
+  function suppress(e: KeyboardEvent): void {
+    e.preventDefault();
+    e.stopPropagation();
+    consumedKeys.add(e.key);
+  }
+
+  document.addEventListener(
+    "keyup",
+    (e) => {
+      if (consumedKeys.delete(e.key)) {
+        e.preventDefault();
+        e.stopPropagation();
       }
-      handler.reset();
-      browser.runtime.sendMessage({ type: "toggle-enabled" });
-      return;
-    }
+    },
+    true,
+  );
 
-    if (!enabled) return;
-
-    if (isInputElement(e.target)) {
-      mode = nextMode(mode, "focus-input");
-    }
-
-    if (mode === "insert") {
-      if (e.key === "Escape") {
-        mode = nextMode(mode, "escape");
-        if (e.target instanceof HTMLElement) {
-          e.target.blur();
+  document.addEventListener(
+    "keydown",
+    (e) => {
+      if (e.key === "Escape" && e.shiftKey) {
+        suppress(e);
+        enabled = !enabled;
+        if (mode === "hint") endHintSession();
+        if (mode === "search") {
+          endSearchSession();
+          endTabFinderSession();
         }
-      }
-      return;
-    }
-
-    if (mode === "hint") {
-      e.preventDefault();
-      if (e.key === "Escape") {
-        endHintSession();
+        handler.reset();
+        browser.runtime.sendMessage({ type: "toggle-enabled" });
         return;
       }
-      if (hintSession) {
-        const result = hintSession.feedKey(e.key);
-        if (result === "complete" || result === "cancel") {
-          hintSession = null;
-          mode = nextMode(mode, "hint-complete");
-        }
+
+      if (!enabled) return;
+
+      if (isInputElement(e.target)) {
+        mode = nextMode(mode, "focus-input");
       }
-      return;
-    }
 
-    if (mode === "search") {
-      return;
-    }
+      if (mode === "insert") {
+        if (e.key === "Escape") {
+          mode = nextMode(mode, "escape");
+          if (e.target instanceof HTMLElement) {
+            e.target.blur();
+          }
+        }
+        return;
+      }
 
-    const key = toKeyNotation(e);
-    const actionName = handler.feed(key, mode);
-    if (actionName) {
-      e.preventDefault();
-      handleAction(actionName);
-    }
-  });
+      if (mode === "hint") {
+        suppress(e);
+        if (e.key === "Escape") {
+          endHintSession();
+          return;
+        }
+        if (hintSession) {
+          const result = hintSession.feedKey(e.key);
+          if (result === "complete" || result === "cancel") {
+            hintSession = null;
+            mode = nextMode(mode, "hint-complete");
+          }
+        }
+        return;
+      }
+
+      if (mode === "search") {
+        return;
+      }
+
+      const key = toKeyNotation(e);
+      const actionName = handler.feed(key, mode);
+      if (actionName) {
+        suppress(e);
+        handleAction(actionName);
+      }
+    },
+    true,
+  );
 
   document.addEventListener("focusin", (e) => {
     if (isInputElement(e.target)) {

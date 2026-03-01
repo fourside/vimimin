@@ -20,7 +20,13 @@ function collectTextNodes(): Text[] {
   let node: Node | null = walker.nextNode();
   while (node) {
     if (node.nodeValue && node.nodeValue.trim() !== "") {
-      nodes.push(node as Text);
+      const el = node.parentElement;
+      if (el?.checkVisibility()) {
+        const rect = el.getBoundingClientRect();
+        if (rect.width > 1 && rect.height > 1) {
+          nodes.push(node as Text);
+        }
+      }
     }
     node = walker.nextNode();
   }

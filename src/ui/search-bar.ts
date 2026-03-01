@@ -1,4 +1,5 @@
 const CONTAINER_ID = "vimimin-search-bar";
+let cleanupClickOutside: (() => void) | null = null;
 
 const CONTAINER_STYLE = [
   "position: fixed",
@@ -69,6 +70,16 @@ export function showSearchBar(callbacks: SearchBarCallbacks): void {
     }
   });
 
+  const onClickOutside = (e: MouseEvent) => {
+    if (!container.contains(e.target as Node)) {
+      callbacks.onClose();
+    }
+  };
+  document.addEventListener("click", onClickOutside);
+  cleanupClickOutside = () => {
+    document.removeEventListener("click", onClickOutside);
+  };
+
   document.documentElement.appendChild(container);
   input.focus();
 }
@@ -84,4 +95,6 @@ export function updateSearchCount(current: number, total: number): void {
 
 export function removeSearchBar(): void {
   document.getElementById(CONTAINER_ID)?.remove();
+  cleanupClickOutside?.();
+  cleanupClickOutside = null;
 }

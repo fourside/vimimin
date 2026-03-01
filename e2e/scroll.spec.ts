@@ -78,4 +78,21 @@ test.describe("scroll and mode tests", () => {
     const scrollY = await page.evaluate(() => window.scrollY);
     expect(scrollY).toBeGreaterThan(0);
   });
+
+  test("consumed keys do not reach page listeners", async ({ page }) => {
+    await page.evaluate(() => {
+      const keys: string[] = [];
+      Object.defineProperty(window, "__receivedKeys", { value: keys });
+      document.addEventListener("keydown", (e) => {
+        keys.push(e.key);
+      });
+    });
+
+    await page.keyboard.press("j");
+
+    const receivedKeys = await page.evaluate(
+      () => (window as unknown as { __receivedKeys: string[] }).__receivedKeys,
+    );
+    expect(receivedKeys).not.toContain("j");
+  });
 });

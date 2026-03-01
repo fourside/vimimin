@@ -88,4 +88,40 @@ test.describe("search mode tests", () => {
     const counter = page.locator("#vimimin-search-bar span:last-child");
     await expect(counter).toHaveText("");
   });
+
+  test("search excludes text in hidden elements", async ({ page }) => {
+    const hiddenCount = await page.locator(".hidden-text").count();
+    expect(hiddenCount).toBe(3);
+
+    await page.keyboard.press("/");
+    const input = page.locator("#vimimin-search-bar input");
+    await input.fill("fox");
+    const marks = page.locator("mark");
+    await expect(marks).toHaveCount(3);
+  });
+
+  test("clicking outside search bar closes it", async ({ page }) => {
+    await page.keyboard.press("/");
+    const input = page.locator("#vimimin-search-bar input");
+    await input.fill("fox");
+
+    await page.click("p");
+
+    const searchBar = page.locator("#vimimin-search-bar");
+    await expect(searchBar).not.toBeAttached();
+    const marks = page.locator("mark");
+    await expect(marks).toHaveCount(0);
+  });
+
+  test("can reopen search with / after clicking outside", async ({ page }) => {
+    await page.keyboard.press("/");
+    const input = page.locator("#vimimin-search-bar input");
+    await input.fill("fox");
+
+    await page.click("p");
+    await expect(page.locator("#vimimin-search-bar")).not.toBeAttached();
+
+    await page.keyboard.press("/");
+    await expect(page.locator("#vimimin-search-bar")).toBeVisible();
+  });
 });
