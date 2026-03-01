@@ -20,7 +20,7 @@ test.describe("search mode tests", () => {
   test("typing fox highlights 3 matches", async ({ page }) => {
     await page.keyboard.press("/");
     const input = page.locator("#vimimin-search-bar input");
-    await input.fill("fox");
+    await input.pressSequentially("fox");
     const marks = page.locator("mark");
     await expect(marks).toHaveCount(3);
   });
@@ -28,7 +28,7 @@ test.describe("search mode tests", () => {
   test("counter shows 1/3 after search", async ({ page }) => {
     await page.keyboard.press("/");
     const input = page.locator("#vimimin-search-bar input");
-    await input.fill("fox");
+    await input.pressSequentially("fox");
     const counter = page.locator("#vimimin-search-bar span:last-child");
     await expect(counter).toHaveText("1/3");
   });
@@ -36,7 +36,7 @@ test.describe("search mode tests", () => {
   test("Enter advances counter to 2/3", async ({ page }) => {
     await page.keyboard.press("/");
     const input = page.locator("#vimimin-search-bar input");
-    await input.fill("fox");
+    await input.pressSequentially("fox");
     await page.keyboard.press("Enter");
     const counter = page.locator("#vimimin-search-bar span:last-child");
     await expect(counter).toHaveText("2/3");
@@ -45,7 +45,7 @@ test.describe("search mode tests", () => {
   test("Shift+Enter wraps counter to 3/3", async ({ page }) => {
     await page.keyboard.press("/");
     const input = page.locator("#vimimin-search-bar input");
-    await input.fill("fox");
+    await input.pressSequentially("fox");
     // We're at 1/3, Shift+Enter goes prev → wraps to 3/3
     await page.keyboard.press("Shift+Enter");
     const counter = page.locator("#vimimin-search-bar span:last-child");
@@ -55,7 +55,7 @@ test.describe("search mode tests", () => {
   test("Escape closes search bar and removes highlights", async ({ page }) => {
     await page.keyboard.press("/");
     const input = page.locator("#vimimin-search-bar input");
-    await input.fill("fox");
+    await input.pressSequentially("fox");
     await page.keyboard.press("Escape");
     const searchBar = page.locator("#vimimin-search-bar");
     await expect(searchBar).not.toBeAttached();
@@ -66,7 +66,7 @@ test.describe("search mode tests", () => {
   test("after closing search, j scrolls (normal mode)", async ({ page }) => {
     await page.keyboard.press("/");
     const input = page.locator("#vimimin-search-bar input");
-    await input.fill("fox");
+    await input.pressSequentially("fox");
     await page.keyboard.press("Escape");
     await page.keyboard.press("j");
     const scrollY = await page.evaluate(() => window.scrollY);
@@ -76,7 +76,6 @@ test.describe("search mode tests", () => {
   test("empty query produces no highlights", async ({ page }) => {
     await page.keyboard.press("/");
     const input = page.locator("#vimimin-search-bar input");
-    await input.fill("");
     const marks = page.locator("mark");
     await expect(marks).toHaveCount(0);
   });
@@ -84,7 +83,7 @@ test.describe("search mode tests", () => {
   test("no-match query shows empty counter", async ({ page }) => {
     await page.keyboard.press("/");
     const input = page.locator("#vimimin-search-bar input");
-    await input.fill("zzzznotfound");
+    await input.pressSequentially("zzzznotfound");
     const counter = page.locator("#vimimin-search-bar span:last-child");
     await expect(counter).toHaveText("");
   });
@@ -95,7 +94,7 @@ test.describe("search mode tests", () => {
 
     await page.keyboard.press("/");
     const input = page.locator("#vimimin-search-bar input");
-    await input.fill("fox");
+    await input.pressSequentially("fox");
     const marks = page.locator("mark");
     await expect(marks).toHaveCount(3);
   });
@@ -103,7 +102,7 @@ test.describe("search mode tests", () => {
   test("clicking outside search bar closes it", async ({ page }) => {
     await page.keyboard.press("/");
     const input = page.locator("#vimimin-search-bar input");
-    await input.fill("fox");
+    await input.pressSequentially("fox");
 
     await page.click("p");
 
@@ -116,7 +115,7 @@ test.describe("search mode tests", () => {
   test("can reopen search with / after clicking outside", async ({ page }) => {
     await page.keyboard.press("/");
     const input = page.locator("#vimimin-search-bar input");
-    await input.fill("fox");
+    await input.pressSequentially("fox");
 
     await page.click("p");
     await expect(page.locator("#vimimin-search-bar")).not.toBeAttached();

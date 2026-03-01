@@ -21,7 +21,7 @@ function collectTextNodes(): Text[] {
   while (node) {
     if (node.nodeValue && node.nodeValue.trim() !== "") {
       const el = node.parentElement;
-      if (el?.checkVisibility()) {
+      if (el?.checkVisibility({ checkVisibilityCSS: true })) {
         const rect = el.getBoundingClientRect();
         if (rect.width > 1 && rect.height > 1) {
           nodes.push(node as Text);
