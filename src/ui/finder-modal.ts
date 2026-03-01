@@ -37,7 +37,7 @@ const LIST_STYLE = [
   "list-style: none",
 ].join(";");
 
-type TabFinderCallbacks = {
+type FinderCallbacks = {
   onInput(query: string): void;
   onSelect(): void;
   onMoveUp(): void;
@@ -45,7 +45,16 @@ type TabFinderCallbacks = {
   onClose(): void;
 };
 
-export function showTabFinder(callbacks: TabFinderCallbacks): void {
+type FinderItem = {
+  title: string;
+  url: string;
+  active?: boolean;
+};
+
+export function showFinder(
+  placeholder: string,
+  callbacks: FinderCallbacks,
+): void {
   if (document.getElementById(CONTAINER_ID)) return;
 
   const container = document.createElement("div");
@@ -54,7 +63,7 @@ export function showTabFinder(callbacks: TabFinderCallbacks): void {
 
   const input = document.createElement("input");
   input.type = "text";
-  input.placeholder = "Search tabs...";
+  input.placeholder = placeholder;
   input.style.cssText = INPUT_STYLE;
   container.appendChild(input);
 
@@ -99,8 +108,8 @@ export function showTabFinder(callbacks: TabFinderCallbacks): void {
   input.focus();
 }
 
-export function updateTabList(
-  items: readonly { title: string; url: string; active: boolean }[],
+export function updateFinderList(
+  items: readonly FinderItem[],
   selectedIndex: number,
 ): void {
   const container = document.getElementById(CONTAINER_ID);
@@ -143,6 +152,6 @@ export function updateTabList(
   }
 }
 
-export function removeTabFinder(): void {
+export function removeFinder(): void {
   document.getElementById(CONTAINER_ID)?.remove();
 }

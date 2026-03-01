@@ -3,7 +3,9 @@ import { KeyHandler } from "../core/keyhandler.js";
 import type { Keymap } from "../core/keymap.js";
 import { nextMode } from "../core/mode.js";
 import type { Mode } from "../shared/types.js";
+import { BookmarkFinderSession } from "./bookmark-finder-session.js";
 import { HintSession, parseHintActionType } from "./hint-session.js";
+import { HistoryFinderSession } from "./history-finder-session.js";
 import { SearchSession } from "./search-session.js";
 import { TabFinderSession } from "./tab-finder-session.js";
 
@@ -35,6 +37,8 @@ export function setupController(
   let hintSession: HintSession | null = null;
   let searchSession: SearchSession | null = null;
   let tabFinderSession: TabFinderSession | null = null;
+  let bookmarkFinderSession: BookmarkFinderSession | null = null;
+  let historyFinderSession: HistoryFinderSession | null = null;
   const handler = new KeyHandler(keymap);
 
   function startHintSession(actionName: string): void {
@@ -76,6 +80,32 @@ export function setupController(
     tabFinderSession?.destroy();
   }
 
+  function startBookmarkFinderSession(): void {
+    bookmarkFinderSession = new BookmarkFinderSession();
+    mode = nextMode(mode, "enter-search");
+    bookmarkFinderSession.start(() => {
+      bookmarkFinderSession = null;
+      mode = nextMode(mode, "search-complete");
+    });
+  }
+
+  function endBookmarkFinderSession(): void {
+    bookmarkFinderSession?.destroy();
+  }
+
+  function startHistoryFinderSession(): void {
+    historyFinderSession = new HistoryFinderSession();
+    mode = nextMode(mode, "enter-search");
+    historyFinderSession.start(() => {
+      historyFinderSession = null;
+      mode = nextMode(mode, "search-complete");
+    });
+  }
+
+  function endHistoryFinderSession(): void {
+    historyFinderSession?.destroy();
+  }
+
   function handleAction(actionName: string): void {
     if (parseHintActionType(actionName)) {
       startHintSession(actionName);
@@ -87,6 +117,10 @@ export function setupController(
       searchSession?.prev();
     } else if (actionName === "tab-finder") {
       startTabFinderSession();
+    } else if (actionName === "bookmark-finder") {
+      startBookmarkFinderSession();
+    } else if (actionName === "history-finder") {
+      startHistoryFinderSession();
     } else if (actionName.startsWith("tab-")) {
       browser.runtime.sendMessage({ type: actionName });
     } else {
@@ -128,6 +162,8 @@ export function setupController(
         if (mode === "search") {
           endSearchSession();
           endTabFinderSession();
+          endBookmarkFinderSession();
+          endHistoryFinderSession();
         }
         handler.reset();
         browser.runtime.sendMessage({ type: "toggle-enabled" });

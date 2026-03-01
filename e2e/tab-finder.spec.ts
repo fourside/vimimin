@@ -3,21 +3,21 @@ import { expect, openFixture, test } from "./helpers/extension.js";
 test.describe("tab-finder tests", () => {
   test("b opens tab-finder modal", async ({ page }) => {
     await openFixture(page, "scroll-test.html");
-    await page.keyboard.press("b");
+    await page.keyboard.press("t");
     const finder = page.locator("#vimimin-tab-finder");
     await expect(finder).toBeVisible();
   });
 
   test("tab-finder input is focused", async ({ page }) => {
     await openFixture(page, "scroll-test.html");
-    await page.keyboard.press("b");
+    await page.keyboard.press("t");
     const input = page.locator("#vimimin-tab-finder input");
     await expect(input).toBeFocused();
   });
 
   test("tab-finder lists at least one tab", async ({ page }) => {
     await openFixture(page, "scroll-test.html");
-    await page.keyboard.press("b");
+    await page.keyboard.press("t");
     const items = page.locator("#vimimin-tab-finder ul li");
     await expect(items.first()).toBeVisible();
     expect(await items.count()).toBeGreaterThanOrEqual(1);
@@ -25,7 +25,7 @@ test.describe("tab-finder tests", () => {
 
   test("Escape closes tab-finder", async ({ page }) => {
     await openFixture(page, "scroll-test.html");
-    await page.keyboard.press("b");
+    await page.keyboard.press("t");
     const finder = page.locator("#vimimin-tab-finder");
     await expect(finder).toBeVisible();
     await page.keyboard.press("Escape");
@@ -36,7 +36,7 @@ test.describe("tab-finder tests", () => {
     page,
   }) => {
     await openFixture(page, "scroll-test.html");
-    await page.keyboard.press("b");
+    await page.keyboard.press("t");
     await page.keyboard.press("Escape");
     await page.keyboard.press("j");
     const scrollY = await page.evaluate(() => window.scrollY);
@@ -61,7 +61,7 @@ test.describe("tab-finder tests", () => {
     });
 
     // Open tab-finder on page2
-    await page2.keyboard.press("b");
+    await page2.keyboard.press("t");
     const items = page2.locator("#vimimin-tab-finder ul li");
     // Wait for tab list to be populated (at least 2 tabs)
     await expect(items.nth(1)).toBeVisible();
@@ -90,7 +90,7 @@ test.describe("tab-finder tests", () => {
       timeout: 5000,
     });
 
-    await page2.keyboard.press("b");
+    await page2.keyboard.press("t");
     const items = page2.locator("#vimimin-tab-finder ul li");
     // Wait for at least 2 items to appear
     await expect(items.nth(1)).toBeVisible();

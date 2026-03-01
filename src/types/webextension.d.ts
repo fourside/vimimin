@@ -49,4 +49,28 @@ declare namespace browser {
   namespace sessions {
     function restore(sessionId?: string): Promise<unknown>;
   }
+  namespace bookmarks {
+    type BookmarkTreeNode = {
+      id: string;
+      title: string;
+      url?: string;
+      type?: string;
+    };
+    function search(
+      query: string | Record<string, unknown>,
+    ): Promise<BookmarkTreeNode[]>;
+  }
+  namespace history {
+    type HistoryItem = {
+      id: string;
+      title?: string;
+      url?: string;
+      lastVisitTime?: number;
+    };
+    function search(query: {
+      text: string;
+      maxResults?: number;
+      startTime?: number;
+    }): Promise<HistoryItem[]>;
+  }
 }

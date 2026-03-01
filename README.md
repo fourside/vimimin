@@ -7,7 +7,7 @@ Vimperator-like keyboard navigation for Firefox. Manifest V3 WebExtension.
 - Vim-style scrolling and navigation
 - Hit-a-hint link following (click, new tab, copy URL/text/markdown)
 - Incremental in-page search
-- Fuzzy tab finder
+- Fuzzy tab / bookmark / history finder
 - Per-tab enable/disable with toolbar icon feedback
 - URL pattern blacklist
 
@@ -55,7 +55,16 @@ Vimperator-like keyboard navigation for Firefox. Manifest V3 WebExtension.
 | `g0` / `g$` | First / last tab |
 | `d` | Close tab |
 | `u` | Restore closed tab |
-| `b` | Fuzzy tab finder |
+| `t` | Fuzzy tab finder |
+| `b` | Fuzzy bookmark finder |
+| `o` | Fuzzy history finder |
+
+### Navigation
+
+| Key | Action |
+|-----|--------|
+| `H` | Go back |
+| `L` | Go forward |
 
 ### Other
 

@@ -1,14 +1,14 @@
 import { fuzzyScore } from "../core/fuzzy.js";
-import type { TabInfo, TabListResponse } from "../shared/messages.js";
+import type { FinderEntry, HistoryListResponse } from "../shared/messages.js";
 import {
   removeFinder,
   showFinder,
   updateFinderList,
 } from "../ui/finder-modal.js";
 
-export class TabFinderSession {
-  private allTabs: TabInfo[] = [];
-  private filtered: TabInfo[] = [];
+export class HistoryFinderSession {
+  private allItems: FinderEntry[] = [];
+  private filtered: FinderEntry[] = [];
   private selectedIndex = 0;
   private onClose: (() => void) | null = null;
 
@@ -16,18 +16,18 @@ export class TabFinderSession {
     this.onClose = onClose;
 
     const response: unknown = await browser.runtime.sendMessage({
-      type: "tab-list",
+      type: "history-list",
     });
     if (
       typeof response === "object" &&
       response !== null &&
-      Array.isArray((response as Record<string, unknown>).tabs)
+      Array.isArray((response as Record<string, unknown>).history)
     ) {
-      this.allTabs = (response as TabListResponse).tabs;
+      this.allItems = (response as HistoryListResponse).history;
     }
-    this.filtered = this.allTabs;
+    this.filtered = this.allItems;
 
-    showFinder("Search tabs...", {
+    showFinder("Search history...", {
       onInput: (query) => this.filter(query),
       onSelect: () => this.select(),
       onMoveUp: () => this.moveUp(),
@@ -40,19 +40,19 @@ export class TabFinderSession {
 
   private filter(query: string): void {
     if (query === "") {
-      this.filtered = this.allTabs;
+      this.filtered = this.allItems;
     } else {
-      this.filtered = this.allTabs
-        .map((tab) => ({
-          tab,
+      this.filtered = this.allItems
+        .map((item) => ({
+          item,
           score: Math.max(
-            fuzzyScore(query, tab.title),
-            fuzzyScore(query, tab.url),
+            fuzzyScore(query, item.title),
+            fuzzyScore(query, item.url),
           ),
         }))
         .filter((entry) => entry.score > 0)
         .sort((a, b) => b.score - a.score)
-        .map((entry) => entry.tab);
+        .map((entry) => entry.item);
     }
     this.selectedIndex = 0;
     this.updateList();
@@ -72,9 +72,9 @@ export class TabFinderSession {
   }
 
   private select(): void {
-    const tab = this.filtered[this.selectedIndex];
-    if (tab) {
-      browser.runtime.sendMessage({ type: "tab-switch", tabId: tab.id });
+    const item = this.filtered[this.selectedIndex];
+    if (item) {
+      location.href = item.url;
     }
     this.destroy();
   }

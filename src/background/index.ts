@@ -1,6 +1,8 @@
 import { isBlacklisted } from "../core/blacklist.js";
 import type {
   BackgroundResponse,
+  BookmarkListResponse,
+  HistoryListResponse,
   TabListResponse,
 } from "../shared/messages.js";
 import { isContentMessage } from "../shared/messages.js";
@@ -100,6 +102,28 @@ async function tabSwitch(tabId: number): Promise<void> {
   await browser.tabs.update(tabId, { active: true });
 }
 
+async function bookmarkList(): Promise<BookmarkListResponse> {
+  const nodes = await browser.bookmarks.search({});
+  return {
+    bookmarks: nodes
+      .filter((n) => n.url)
+      .map((n) => ({ title: n.title, url: n.url as string })),
+  };
+}
+
+async function historyList(): Promise<HistoryListResponse> {
+  const items = await browser.history.search({
+    text: "",
+    maxResults: 1000,
+    startTime: 0,
+  });
+  return {
+    history: items
+      .filter((h) => h.url)
+      .map((h) => ({ title: h.title ?? "", url: h.url as string })),
+  };
+}
+
 browser.runtime.onMessage.addListener((message, sender) => {
   if (!isContentMessage(message)) return;
   const tabId = sender.tab?.id;
@@ -135,6 +159,10 @@ browser.runtime.onMessage.addListener((message, sender) => {
       return tabList();
     case "tab-switch":
       return tabSwitch(message.tabId) as Promise<unknown>;
+    case "bookmark-list":
+      return bookmarkList();
+    case "history-list":
+      return historyList();
   }
 });
 

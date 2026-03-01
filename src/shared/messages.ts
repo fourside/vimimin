@@ -8,7 +8,9 @@ type ContentMessage =
   | { type: "tab-first" }
   | { type: "tab-last" }
   | { type: "tab-list" }
-  | { type: "tab-switch"; tabId: number };
+  | { type: "tab-switch"; tabId: number }
+  | { type: "bookmark-list" }
+  | { type: "history-list" };
 
 const validTypes: ReadonlySet<ContentMessage["type"]> = new Set([
   "get-enabled",
@@ -21,6 +23,8 @@ const validTypes: ReadonlySet<ContentMessage["type"]> = new Set([
   "tab-last",
   "tab-list",
   "tab-switch",
+  "bookmark-list",
+  "history-list",
 ] as const);
 
 export function isContentMessage(value: unknown): value is ContentMessage {
@@ -45,4 +49,17 @@ export type TabInfo = {
 
 export type TabListResponse = {
   tabs: TabInfo[];
+};
+
+export type FinderEntry = {
+  title: string;
+  url: string;
+};
+
+export type BookmarkListResponse = {
+  bookmarks: FinderEntry[];
+};
+
+export type HistoryListResponse = {
+  history: FinderEntry[];
 };

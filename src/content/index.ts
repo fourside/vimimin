@@ -21,6 +21,14 @@ registry.register("reload", () => {
   location.reload();
 });
 
+registry.register("go-back", () => {
+  history.back();
+});
+
+registry.register("go-forward", () => {
+  history.forward();
+});
+
 declare const __E2E__: boolean;
 
 const controller = setupController(defaultKeymap, registry);
