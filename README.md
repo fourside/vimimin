@@ -55,9 +55,10 @@ Vimperator-like keyboard navigation for Firefox. Manifest V3 WebExtension.
 | `g0` / `g$` | First / last tab |
 | `d` | Close tab |
 | `u` | Restore closed tab |
-| `t` | Fuzzy tab finder |
+| `t` | Fuzzy tab finder (`Ctrl+D` to close selected tab) |
 | `b` | Fuzzy bookmark finder |
 | `o` | Fuzzy history finder |
+| `a` | Toggle bookmark for current page |
 | `p` | Open clipboard URL in background tab |
 
 ### Navigation

@@ -15,8 +15,8 @@ npm run check        # biome check (format + lint)
 npm run format       # biome format --write
 npm run typecheck    # tsc (src + e2e)
 npm run knip         # detect unused exports/imports
-npm test             # vitest run (88 unit tests)
-npm run test:e2e     # playwright test (32 E2E tests, builds with E2E flag automatically)
+npm test             # vitest run (97 unit tests)
+npm run test:e2e     # playwright test (45 E2E tests, builds with E2E flag automatically)
 npm run test:watch   # vitest watch mode
 ```
 
@@ -38,7 +38,7 @@ Two entry points bundled by esbuild (IIFE, target firefox115):
 
 **Modes:** normal → insert / hint / search / tab-finder. Transitions are deterministic via `nextMode()` in `core/mode.ts` driven by `ModeEvent` values.
 
-**Sessions:** `HintSession`, `SearchSession`, `TabFinderSession` each manage mode-specific state and UI lifecycle with a callback-based cleanup pattern.
+**Sessions:** `HintSession`, `SearchSession`, `TabFinderSession`, `BookmarkFinderSession`, `HistoryFinderSession` each manage mode-specific state and UI lifecycle with a callback-based cleanup pattern.
 
 **Action registry:** Actions are registered by name in `core/action-registry.ts`. Keybindings in `core/keymap.ts` map to action names, not functions directly.
 
