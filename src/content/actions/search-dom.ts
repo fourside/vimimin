@@ -49,6 +49,7 @@ export class SearchHighlighter {
       let lastEnd = 0;
 
       for (const match of matches) {
+        if (match.start < lastEnd) continue;
         if (match.start > lastEnd) {
           fragment.appendChild(
             document.createTextNode(text.slice(lastEnd, match.start)),
@@ -96,5 +97,6 @@ export class SearchHighlighter {
       parent.normalize();
     }
     this.marks = [];
+    document.getElementById("vimimin-search-style")?.remove();
   }
 }

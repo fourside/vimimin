@@ -1,6 +1,10 @@
 {
   "entry": ["src/content/index.ts", "src/background/index.ts"],
   "project": ["src/**/*.ts", "e2e/**/*.ts"],
+  "vitest": {
+    "config": ["vitest.config.ts"],
+    "entry": ["src/**/*.test.ts"]
+  },
   "playwright": {
     "config": ["playwright.config.ts"],
     "entry": ["e2e/**/*.spec.ts"]

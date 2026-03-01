@@ -22,15 +22,6 @@ function toKeyNotation(e: KeyboardEvent): string {
   return e.key;
 }
 
-const TAB_ACTIONS = new Set([
-  "tab-next",
-  "tab-prev",
-  "tab-close",
-  "tab-restore",
-  "tab-first",
-  "tab-last",
-]);
-
 type Controller = {
   setEnabled(value: boolean): void;
 };
@@ -96,7 +87,7 @@ export function setupController(
       searchSession?.prev();
     } else if (actionName === "tab-finder") {
       startTabFinderSession();
-    } else if (TAB_ACTIONS.has(actionName)) {
+    } else if (actionName.startsWith("tab-")) {
       browser.runtime.sendMessage({ type: actionName });
     } else {
       const action = registry.get(actionName);

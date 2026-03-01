@@ -15,10 +15,16 @@ export class TabFinderSession {
   async start(onClose: () => void): Promise<void> {
     this.onClose = onClose;
 
-    const response = (await browser.runtime.sendMessage({
+    const response: unknown = await browser.runtime.sendMessage({
       type: "tab-list",
-    })) as TabListResponse;
-    this.allTabs = response.tabs;
+    });
+    if (
+      typeof response === "object" &&
+      response !== null &&
+      Array.isArray((response as Record<string, unknown>).tabs)
+    ) {
+      this.allTabs = (response as TabListResponse).tabs;
+    }
     this.filtered = this.allTabs;
 
     showTabFinder({

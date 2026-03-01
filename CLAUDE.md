@@ -15,7 +15,7 @@ npm run check        # biome check (format + lint)
 npm run format       # biome format --write
 npm run typecheck    # tsc (src + e2e)
 npm run knip         # detect unused exports/imports
-npm test             # vitest run (74 unit tests)
+npm test             # vitest run (88 unit tests)
 npm run test:e2e     # playwright test (32 E2E tests, builds with E2E flag automatically)
 npm run test:watch   # vitest watch mode
 ```
@@ -46,7 +46,7 @@ Two entry points bundled by esbuild (IIFE, target firefox115):
 
 ## Conventions
 
-- Unit tests are co-located: `foo.test.ts` next to `foo.ts` in `src/core/`
+- Unit tests are co-located: `foo.test.ts` next to `foo.ts` in `src/`
 - E2E tests in `e2e/` using Playwright + `playwright-webextext` on real Firefox
 - TypeScript strict mode with `noUncheckedIndexedAccess` — always handle `T | undefined` from indexed access
 - `verbatimModuleSyntax` — use `import type` for type-only imports

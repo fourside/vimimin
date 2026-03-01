@@ -10,7 +10,7 @@ type ContentMessage =
   | { type: "tab-list" }
   | { type: "tab-switch"; tabId: number };
 
-const validTypes = new Set<string>([
+const validTypes: ReadonlySet<ContentMessage["type"]> = new Set([
   "get-enabled",
   "toggle-enabled",
   "tab-next",
@@ -21,13 +21,13 @@ const validTypes = new Set<string>([
   "tab-last",
   "tab-list",
   "tab-switch",
-]);
+] as const);
 
 export function isContentMessage(value: unknown): value is ContentMessage {
   if (typeof value !== "object" || value === null) return false;
   const obj = value as Record<string, unknown>;
   if (typeof obj.type !== "string") return false;
-  if (!validTypes.has(obj.type)) return false;
+  if (!(validTypes as ReadonlySet<string>).has(obj.type)) return false;
   if (obj.type === "tab-switch" && typeof obj.tabId !== "number") return false;
   return true;
 }

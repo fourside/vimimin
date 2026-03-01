@@ -1,7 +1,6 @@
 export type Mode = "normal" | "insert" | "hint" | "search";
 
 export type ModeEvent =
-  | "keypress"
   | "focus-input"
   | "escape"
   | "enter-hint"
