@@ -75,7 +75,6 @@ test.describe("search mode tests", () => {
 
   test("empty query produces no highlights", async ({ page }) => {
     await page.keyboard.press("/");
-    const input = page.locator("#vimimin-search-bar input");
     const marks = page.locator("mark");
     await expect(marks).toHaveCount(0);
   });
