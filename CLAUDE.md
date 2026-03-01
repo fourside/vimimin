@@ -52,3 +52,5 @@ Two entry points bundled by esbuild (IIFE, target firefox115):
 - `verbatimModuleSyntax` — use `import type` for type-only imports
 - Biome: tabs for indentation, double quotes for JS/TS
 - Build copies `src/manifest.json` and `src/icons/` into `dist/` (not bundled by esbuild)
+- Node.js version is pinned in `.nvmrc`
+- `tslib` is a direct devDependency only because `playwright-webextext` uses it at runtime but omits it from its own `dependencies`
