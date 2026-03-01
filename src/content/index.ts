@@ -9,19 +9,19 @@ const registry = new ActionRegistry();
 registerScrollActions(registry);
 
 registry.register("yank-url", () => {
-	navigator.clipboard.writeText(window.location.href);
+  navigator.clipboard.writeText(window.location.href);
 });
 
 registry.register("yank-markdown", () => {
-	const text = formatMarkdownLink(document.title, window.location.href);
-	navigator.clipboard.writeText(text);
+  const text = formatMarkdownLink(document.title, window.location.href);
+  navigator.clipboard.writeText(text);
 });
 
 const controller = setupKeyListener(defaultKeymap, registry);
 
 browser.runtime.sendMessage({ type: "get-enabled" }).then((response) => {
-	const { enabled } = response as BackgroundResponse;
-	controller.setEnabled(enabled);
+  const { enabled } = response as BackgroundResponse;
+  controller.setEnabled(enabled);
 });
 
 document.documentElement.dataset.vimiminLoaded = "true";
