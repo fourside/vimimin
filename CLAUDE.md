@@ -27,7 +27,7 @@ Run a single E2E spec: `npx playwright test e2e/scroll.spec.ts`
 
 Two entry points bundled by esbuild (IIFE, target firefox115):
 
-- **`src/content/`** — Content script injected on all pages. `keylistener.ts` is the central dispatcher that reads the current mode and delegates to the appropriate session or action.
+- **`src/content/`** — Content script injected on all pages. `controller.ts` is the central dispatcher that reads the current mode and delegates to the appropriate session or action.
 - **`src/background/`** — Background script. Handles tab operations, per-tab enabled state (session storage), blacklist checks (local storage), and toolbar icon updates.
 - **`src/core/`** — Pure logic with no DOM or browser API dependencies. All unit tests live here alongside their modules.
 - **`src/shared/`** — Message types (`ContentMessage`, `BackgroundResponse`) for typed content↔background communication via `browser.runtime.sendMessage`.

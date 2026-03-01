@@ -3,7 +3,6 @@ import type { TabInfo, TabListResponse } from "../shared/messages.js";
 import {
   removeTabFinder,
   showTabFinder,
-  type TabItem,
   updateTabList,
 } from "../ui/tab-finder.js";
 
@@ -75,13 +74,7 @@ export class TabFinderSession {
   }
 
   private updateList(): void {
-    const items: TabItem[] = this.filtered.map((t) => ({
-      id: t.id,
-      title: t.title,
-      url: t.url,
-      active: t.active,
-    }));
-    updateTabList(items, this.selectedIndex);
+    updateTabList(this.filtered, this.selectedIndex);
   }
 
   destroy(): void {

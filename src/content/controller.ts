@@ -31,14 +31,14 @@ const TAB_ACTIONS = new Set([
   "tab-last",
 ]);
 
-type KeyListenerController = {
+type Controller = {
   setEnabled(value: boolean): void;
 };
 
-export function setupKeyListener(
+export function setupController(
   keymap: Keymap,
   registry: ActionRegistry,
-): KeyListenerController {
+): Controller {
   let enabled = true;
   let mode: Mode = "normal";
   let hintSession: HintSession | null = null;

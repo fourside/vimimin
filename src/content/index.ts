@@ -3,7 +3,7 @@ import { defaultKeymap } from "../core/keymap.js";
 import { formatMarkdownLink } from "../core/yank.js";
 import type { BackgroundResponse } from "../shared/messages.js";
 import { registerScrollActions } from "./actions/scroll.js";
-import { setupKeyListener } from "./keylistener.js";
+import { setupController } from "./controller.js";
 
 const registry = new ActionRegistry();
 registerScrollActions(registry);
@@ -17,7 +17,7 @@ registry.register("yank-markdown", () => {
   navigator.clipboard.writeText(text);
 });
 
-const controller = setupKeyListener(defaultKeymap, registry);
+const controller = setupController(defaultKeymap, registry);
 
 browser.runtime.sendMessage({ type: "get-enabled" }).then((response) => {
   const { enabled } = response as BackgroundResponse;

@@ -99,20 +99,16 @@ export function showTabFinder(callbacks: TabFinderCallbacks): void {
   input.focus();
 }
 
-export type TabItem = {
-  id: number;
-  title: string;
-  url: string;
-  active: boolean;
-};
-
-export function updateTabList(items: TabItem[], selectedIndex: number): void {
+export function updateTabList(
+  items: readonly { title: string; url: string; active: boolean }[],
+  selectedIndex: number,
+): void {
   const container = document.getElementById(CONTAINER_ID);
   if (!container) return;
   const list = container.querySelector("ul");
   if (!list) return;
 
-  list.innerHTML = "";
+  list.replaceChildren();
   for (let i = 0; i < items.length; i++) {
     const item = items[i];
     if (!item) continue;

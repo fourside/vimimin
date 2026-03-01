@@ -53,4 +53,10 @@ describe("isBlacklisted", () => {
       isBlacklisted("https://slack.com/channel", ["example.com", "slack.com"]),
     ).toBe(true);
   });
+
+  it("escapes ? in pattern so it does not act as regex quantifier", () => {
+    // Without escaping, "example.co?m" would match "example.cm" (? = 0 or 1)
+    expect(isBlacklisted("https://example.cm", ["example.co?m"])).toBe(false);
+    expect(isBlacklisted("https://example.com", ["example.co?m"])).toBe(false);
+  });
 });

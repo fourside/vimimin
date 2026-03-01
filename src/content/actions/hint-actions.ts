@@ -1,3 +1,4 @@
+import { formatMarkdownLink } from "../../core/yank.js";
 import type { HintActionType } from "../../shared/types.js";
 
 function clickElement(el: Element): void {
@@ -49,7 +50,7 @@ export function executeHintAction(
     case "copy-markdown": {
       const url = getUrl(el);
       const text = getText(el);
-      copyToClipboard(`[${text}](${url})`);
+      copyToClipboard(formatMarkdownLink(text, url));
       break;
     }
   }

@@ -74,7 +74,12 @@ export function highlightHintInput(input: string): void {
     if (label.startsWith(input) && input.length > 0) {
       const matched = label.slice(0, input.length);
       const rest = label.slice(input.length);
-      span.innerHTML = `<span style="color:#d44;">${matched}</span>${rest}`;
+      span.textContent = "";
+      const matchedSpan = document.createElement("span");
+      matchedSpan.style.color = "#d44";
+      matchedSpan.textContent = matched;
+      span.appendChild(matchedSpan);
+      span.append(rest);
     } else {
       span.textContent = label;
     }
