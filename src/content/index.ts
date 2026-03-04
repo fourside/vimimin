@@ -86,5 +86,14 @@ declare const __E2E__: boolean;
 
   if (__E2E__) {
     document.documentElement.dataset.vimiminLoaded = "true";
+    window.addEventListener("message", (event) => {
+      if (event.data?.type === "vimimin-e2e-set-storage") {
+        browser.storage.local
+          .set({ userConfig: event.data.config })
+          .then(() => {
+            window.postMessage({ type: "vimimin-e2e-storage-done" }, "*");
+          });
+      }
+    });
   }
 })();
