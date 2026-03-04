@@ -2,6 +2,7 @@ import { ActionRegistry } from "../core/action-registry.js";
 import { defaultKeymap } from "../core/keymap.js";
 import { formatMarkdownLink } from "../core/yank.js";
 import type { BackgroundResponse } from "../shared/messages.js";
+import { isBackgroundMessage } from "../shared/messages.js";
 import { applyLdrize } from "./actions/ldrize.js";
 import { registerPageNavActions } from "./actions/page-nav.js";
 import { registerScrollActions } from "./actions/scroll.js";
@@ -57,6 +58,13 @@ browser.runtime.sendMessage({ type: "get-enabled" }).then((response) => {
   ) {
     controller.setEnabled((response as BackgroundResponse).enabled);
   }
+});
+
+browser.runtime.onMessage.addListener((message) => {
+  if (isBackgroundMessage(message)) {
+    controller.setEnabled(message.enabled);
+  }
+  return undefined;
 });
 
 if (__E2E__) {

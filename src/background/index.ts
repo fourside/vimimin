@@ -194,6 +194,17 @@ browser.tabs.onRemoved.addListener((tabId) => {
   browser.storage.session.remove(storageKey(tabId));
 });
 
+browser.action.onClicked.addListener(async (tab) => {
+  if (tab.id === undefined) return;
+  const url = tab.url ?? "";
+  const res = await toggleEnabled(tab.id, url);
+  await updateIcon(tab.id, res.enabled);
+  await browser.tabs.sendMessage(tab.id, {
+    type: "set-enabled",
+    enabled: res.enabled,
+  });
+});
+
 browser.tabs.onActivated.addListener(async ({ tabId }) => {
   const key = storageKey(tabId);
   const result = await browser.storage.session.get(key);

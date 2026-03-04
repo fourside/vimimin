@@ -26,6 +26,9 @@ declare namespace browser {
       title: string;
       tabId?: number;
     }): Promise<void>;
+    namespace onClicked {
+      function addListener(callback: (tab: browser.tabs.Tab) => void): void;
+    }
   }
   namespace tabs {
     type Tab = {
@@ -38,6 +41,7 @@ declare namespace browser {
     function update(tabId: number, props: { active: boolean }): Promise<Tab>;
     function create(props: { url: string; active?: boolean }): Promise<Tab>;
     function remove(tabId: number): Promise<void>;
+    function sendMessage(tabId: number, message: unknown): Promise<unknown>;
     namespace onRemoved {
       function addListener(callback: (tabId: number) => void): void;
     }

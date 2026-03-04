@@ -51,6 +51,16 @@ export type BackgroundResponse = {
   enabled: boolean;
 };
 
+type BackgroundMessage = { type: "set-enabled"; enabled: boolean };
+
+export function isBackgroundMessage(
+  value: unknown,
+): value is BackgroundMessage {
+  if (typeof value !== "object" || value === null) return false;
+  const obj = value as Record<string, unknown>;
+  return obj.type === "set-enabled" && typeof obj.enabled === "boolean";
+}
+
 export type TabInfo = {
   id: number;
   title: string;
