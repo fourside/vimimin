@@ -19,4 +19,17 @@ describe("findSiteinfo", () => {
   it("returns undefined for invalid URL", () => {
     expect(findSiteinfo("not-a-url")).toBeUndefined();
   });
+
+  it("uses custom siteinfos when provided", () => {
+    const custom = [{ pattern: "example.com", selector: ".item" }] as const;
+    expect(findSiteinfo("https://example.com/page", custom)).toEqual({
+      pattern: "example.com",
+      selector: ".item",
+    });
+  });
+
+  it("does not match default siteinfos when custom list is provided", () => {
+    const custom = [{ pattern: "example.com", selector: ".item" }] as const;
+    expect(findSiteinfo("https://x.com/home", custom)).toBeUndefined();
+  });
 });

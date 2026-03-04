@@ -1,14 +1,17 @@
-type Siteinfo = {
+export type Siteinfo = {
   readonly pattern: string;
   readonly selector: string;
 };
 
-const siteinfos: readonly Siteinfo[] = [
+export const defaultSiteinfos: readonly Siteinfo[] = [
   { pattern: "x.com", selector: "article" },
   { pattern: "twitter.com", selector: "article" },
 ];
 
-export function findSiteinfo(url: string): Siteinfo | undefined {
+export function findSiteinfo(
+  url: string,
+  siteinfos: readonly Siteinfo[] = defaultSiteinfos,
+): Siteinfo | undefined {
   try {
     const hostname = new URL(url).hostname;
     return siteinfos.find((s) => s.pattern === hostname);

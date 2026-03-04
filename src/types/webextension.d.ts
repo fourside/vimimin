@@ -18,6 +18,7 @@ declare namespace browser {
     }
     namespace local {
       function get(keys: string | string[]): Promise<Record<string, unknown>>;
+      function set(items: Record<string, unknown>): Promise<void>;
     }
   }
   namespace action {

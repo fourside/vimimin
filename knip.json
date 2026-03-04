@@ -1,5 +1,9 @@
 {
-  "entry": ["src/content/index.ts", "src/background/index.ts"],
+  "entry": [
+    "src/content/index.ts",
+    "src/background/index.ts",
+    "src/options/index.ts"
+  ],
   "project": ["src/**/*.ts", "e2e/**/*.ts"],
   "vitest": {
     "config": ["vitest.config.ts"],

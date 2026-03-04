@@ -24,9 +24,15 @@ await Promise.all([
     entryPoints: ["src/background/index.ts"],
     outfile: "dist/background.js",
   }),
+  esbuild.build({
+    ...common,
+    entryPoints: ["src/options/index.ts"],
+    outfile: "dist/options.js",
+  }),
 ]);
 
 cpSync("src/manifest.json", "dist/manifest.json");
+cpSync("src/options/index.html", "dist/options.html");
 cpSync("src/icons", "dist/icons", { recursive: true });
 
 console.log("Build complete.");

@@ -1,11 +1,15 @@
 import type { ActionRegistry } from "../../core/action-registry.js";
 import { findItemIndex } from "../../core/ldrize.js";
+import type { Siteinfo } from "../../core/siteinfo.js";
 import { findSiteinfo } from "../../core/siteinfo.js";
 
 const THRESHOLD = 5;
 
-export function applyLdrize(registry: ActionRegistry): void {
-  const siteinfo = findSiteinfo(window.location.href);
+export function applyLdrize(
+  registry: ActionRegistry,
+  siteinfos?: readonly Siteinfo[],
+): void {
+  const siteinfo = findSiteinfo(window.location.href, siteinfos);
   if (!siteinfo) return;
 
   const originalDown = registry.get("scroll-down");
