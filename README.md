@@ -91,6 +91,18 @@ npm run check     # Lint and format check (Biome)
 npm run typecheck # Type check (src + e2e)
 ```
 
+## Signing
+
+Sign the extension for self-distribution (unlisted on AMO):
+
+```bash
+npx web-ext sign --source-dir=dist --channel=unlisted --api-key=<JWT issuer> --api-secret=<JWT secret>
+```
+
+API keys can be obtained from [AMO Developer Hub > API Keys](https://addons.mozilla.org/developers/addon/api/key/).
+
+The signed `.xpi` file will be output to `web-ext-artifacts/`.
+
 ## Requirements
 
 - Firefox 115+
