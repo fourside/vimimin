@@ -28,6 +28,10 @@ describe("nextMode", () => {
     it("transitions to normal on escape", () => {
       expect(nextMode("insert", "escape")).toBe("normal");
     });
+
+    it("transitions to normal on blur-input", () => {
+      expect(nextMode("insert", "blur-input")).toBe("normal");
+    });
   });
 
   describe("hint mode", () => {

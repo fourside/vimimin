@@ -16,6 +16,7 @@ export function nextMode(current: Mode, event: ModeEvent): Mode {
     case "insert":
       switch (event) {
         case "escape":
+        case "blur-input":
           return "normal";
         default:
           return "insert";

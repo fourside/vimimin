@@ -230,6 +230,12 @@ export function setupController(
     }
   });
 
+  document.addEventListener("focusout", (e) => {
+    if (isInputElement(e.target)) {
+      mode = nextMode(mode, "blur-input");
+    }
+  });
+
   return {
     setEnabled(value: boolean) {
       enabled = value;
