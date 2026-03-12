@@ -157,6 +157,8 @@ export function setupController(
   document.addEventListener(
     "keydown",
     (e) => {
+      if (e.isComposing) return;
+
       if (e.key === "Escape" && e.shiftKey) {
         suppress(e);
         enabled = !enabled;

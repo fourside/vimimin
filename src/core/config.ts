@@ -99,6 +99,9 @@ export function validateConfig(value: unknown): UserConfig {
           "Each siteinfo entry must have pattern and selector strings",
         );
       }
+      if (entry.selector.trim() === "") {
+        throw new Error("siteinfo selector must not be empty");
+      }
     }
     config.siteinfo = obj.siteinfo as Siteinfo[];
   }
