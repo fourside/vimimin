@@ -1,4 +1,5 @@
 PLAN.md
+.claude/settings.local.json
 node_modules/
 dist/
 web-ext-artifacts/
