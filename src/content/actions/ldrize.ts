@@ -43,7 +43,7 @@ export function applyLdrize(
     const index = findItemIndex(rects, THRESHOLD, "next");
     const rect = index !== undefined ? rects[index] : undefined;
     if (rect) {
-      window.scrollBy(0, rect.top);
+      window.scrollBy(0, rect.top - (window.innerHeight - rect.height) / 2);
     } else {
       originalDown?.();
     }
@@ -59,7 +59,7 @@ export function applyLdrize(
     const index = findItemIndex(rects, THRESHOLD, "prev");
     const rect = index !== undefined ? rects[index] : undefined;
     if (rect) {
-      window.scrollBy(0, rect.top);
+      window.scrollBy(0, rect.top - (window.innerHeight - rect.height) / 2);
     } else {
       originalUp?.();
     }
