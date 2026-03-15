@@ -13,5 +13,5 @@
     "config": ["playwright.config.ts"],
     "entry": ["e2e/**/*.spec.ts"]
   },
-  "ignoreDependencies": ["tslib"]
+  "ignoreDependencies": ["tslib", "@commitlint/cli"]
 }
